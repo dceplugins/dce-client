@@ -1,5 +1,5 @@
 import unittest
-from types import StringTypes
+import six
 
 from dce import DCEAPIClient
 from dce.consts import DCE_MODES
@@ -24,14 +24,14 @@ class ClientTest(unittest.TestCase):
         self.assertIsInstance(self.api28.now(), float)
 
     def test_info(self):
-        self.assertIsInstance(self.api26.cluster_uuid, StringTypes)
-        self.assertIsInstance(self.api28.cluster_uuid, StringTypes)
-        self.assertIsInstance(self.api26.virt_tech, StringTypes)
-        self.assertIsInstance(self.api28.virt_tech, StringTypes)
-        self.assertIsInstance(self.api26.virt_tech_type, StringTypes)
-        self.assertIsInstance(self.api28.virt_tech_type, StringTypes)
-        self.assertIsInstance(self.api26.stream_room, StringTypes)
-        self.assertIsInstance(self.api28.stream_room, StringTypes)
+        self.assertIsInstance(self.api26.cluster_uuid, six.string_types)
+        self.assertIsInstance(self.api28.cluster_uuid, six.string_types)
+        self.assertIsInstance(self.api26.virt_tech, six.string_types)
+        self.assertIsInstance(self.api28.virt_tech, six.string_types)
+        self.assertIsInstance(self.api26.virt_tech_type, six.string_types)
+        self.assertIsInstance(self.api28.virt_tech_type, six.string_types)
+        self.assertIsInstance(self.api26.stream_room, six.string_types)
+        self.assertIsInstance(self.api28.stream_room, six.string_types)
 
         self.assertIn(self.api28.mode, DCE_MODES)
         with self.assertRaises(InvalidVersion):

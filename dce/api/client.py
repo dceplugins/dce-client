@@ -1,10 +1,10 @@
 # coding=utf-8
-from urlparse import urlparse
 
 import requests
 import urllib3
 from requests.auth import HTTPBasicAuth
 from semantic_version import Version as _V
+from six.moves.urllib_parse import urlparse
 
 from ..consts import DEFAULT_TIMEOUT_SECONDS
 from ..consts import DEFAULT_USER_AGENT
