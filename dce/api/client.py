@@ -17,11 +17,11 @@ from ..utils.decorators import minimum_version
 urllib3.disable_warnings()
 
 
-class DCEAPIClient(requests.Session):
+class BaseDCEAPIClient(requests.Session):
     def __init__(self, base_url=None, token=None,
                  username=None, password=None, timeout=DEFAULT_TIMEOUT_SECONDS,
                  user_agent=DEFAULT_USER_AGENT, min_version=MINIMUM_DCE_VERSION):
-        super(DCEAPIClient, self).__init__()
+        super(BaseDCEAPIClient, self).__init__()
         if base_url.endswith('/'):
             base_url = base_url[:-1]
         if not base_url.startswith('http://') or base_url.startswith('https://'):
@@ -137,3 +137,11 @@ class DCEAPIClient(requests.Session):
 
     def __repr__(self):
         return "<DCEClient '%s'>" % self.host
+
+
+from .docker_client import DockerMixin
+
+
+class DCEAPIClient(DockerMixin,
+                   BaseDCEAPIClient):
+    pass

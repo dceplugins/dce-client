@@ -3,8 +3,6 @@ from functools import partial
 
 from .client import DCEDockerClient
 from .client import dce_docker_api_client
-from .. import DCEAPIClient
-from .. import DCEClient
 from ..utils import memoize_with_expire
 
 
@@ -47,6 +45,8 @@ def detect_dce_ports(client=None):
 
 @memoize_with_expire(60)
 def _get_dce_client(token=None, username=None, password=None, docker_client=None, api_client=False):
+    from .. import DCEClient
+
     c = docker_client or dce_docker_api_client()
     addr = c.info()['Swarm']['NodeAddr']
     _, port, ssl_port = detect_dce_ports(c)
@@ -61,6 +61,8 @@ get_local_dce_client = partial(_get_dce_client, api_client=False)
 
 @memoize_with_expire(60)
 def _get_node_docker_clients(token=None, username=None, password=None, client=None, api=False):
+    from .. import DCEAPIClient
+
     c = client or dce_docker_api_client()
     controllers = [n['ManagerStatus']['Addr'] for n in c.nodes() if n['Spec']['Role'] == 'manager']
     addr = controllers[0].split(':')[0]
