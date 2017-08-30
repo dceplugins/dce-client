@@ -29,12 +29,13 @@ class APIError(requests.exceptions.HTTPError, DCEException):
     An HTTP error from the API.
     """
 
-    def __init__(self, message, response=None, explanation=None):
+    def __init__(self, message, response=None, explanation=None, code=None):
         # requests 1.2 supports response as a keyword argument, but
         # requests 1.1 doesn't
         super(APIError, self).__init__(message)
         self.response = response
         self.explanation = explanation
+        self.code = code
 
     def __str__(self):
         message = super(APIError, self).__str__()
@@ -54,6 +55,8 @@ class APIError(requests.exceptions.HTTPError, DCEException):
 
     @property
     def status_code(self):
+        if self.code:
+            return self.code
         if self.response is not None:
             return self.response.status_code
 
@@ -66,6 +69,10 @@ class APIError(requests.exceptions.HTTPError, DCEException):
         if self.status_code is None:
             return False
         return 500 <= self.status_code < 600
+
+
+class NotAuthorizedError(APIError):
+    pass
 
 
 class InvalidVersion(DCEException):
